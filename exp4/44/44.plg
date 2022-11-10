@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Documents and Settings\Administrator\×ÀÃæ\44\44.uvproj
+Project File Date:  11/11/2021
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling 44.asm...
+linking...
+Program Size: data=8.0 xdata=0 code=313
+creating hex file from "44"...
+"44" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling 44.asm...
+linking...
+Program Size: data=8.0 xdata=0 code=313
+creating hex file from "44"...
+"44" - 0 Error(s), 0 Warning(s).

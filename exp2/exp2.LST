@@ -1,0 +1,107 @@
+C51 COMPILER V9.01   EXP2                                                                  10/21/2021 11:08:17 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE EXP2
+OBJECT MODULE PLACED IN exp2.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE exp2.c BROWSE DEBUG OBJECTEXTEND CODE
+
+line level    source
+
+   1          #include <reg51.h>
+   2          
+   3          void main(){
+   4   1              while(1)
+   5   1              switch(P3){
+   6   2                      case ~0x01: P1 = 0xef;break;
+   7   2                      case ~0x02: P1 = 0xf7;break;
+   8   2                      case ~0x04: P1 = 0xe7;break;
+   9   2                      case ~0x08: P1 = 0xfb;break;
+  10   2                      case ~0x10: P1 = 0xeb;break;
+  11   2                      case ~0x20: P1 = 0xf3;break;
+  12   2                      case ~0x40: P1 = 0xe3;break;
+  13   2                      case ~0x80: P1 = 0xfd;break;
+  14   2                      default: P1 = 0xff;break;
+  15   2              }
+  16   1      }
+C51 COMPILER V9.01   EXP2                                                                  10/21/2021 11:08:17 PAGE 2   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION main (BEGIN)
+                                           ; SOURCE LINE # 3
+0000         ?C0001:
+                                           ; SOURCE LINE # 4
+                                           ; SOURCE LINE # 5
+0000 AFB0              MOV     R7,P3
+0002 EF                MOV     A,R7
+0003 2481              ADD     A,#081H
+0005 603E              JZ      ?C0011
+0007 24C0              ADD     A,#0C0H
+0009 6035              JZ      ?C0010
+000B 24E0              ADD     A,#0E0H
+000D 602C              JZ      ?C0009
+000F 24F0              ADD     A,#0F0H
+0011 6023              JZ      ?C0008
+0013 24F8              ADD     A,#0F8H
+0015 601A              JZ      ?C0007
+0017 24FC              ADD     A,#0FCH
+0019 6011              JZ      ?C0006
+001B 24FE              ADD     A,#0FEH
+001D 6008              JZ      ?C0005
+001F 14                DEC     A
+0020 7028              JNZ     ?C0012
+                                           ; SOURCE LINE # 6
+0022         ?C0004:
+0022 7590EF            MOV     P1,#0EFH
+0025 80D9              SJMP    ?C0001
+                                           ; SOURCE LINE # 7
+0027         ?C0005:
+0027 7590F7            MOV     P1,#0F7H
+002A 80D4              SJMP    ?C0001
+                                           ; SOURCE LINE # 8
+002C         ?C0006:
+002C 7590E7            MOV     P1,#0E7H
+002F 80CF              SJMP    ?C0001
+                                           ; SOURCE LINE # 9
+0031         ?C0007:
+0031 7590FB            MOV     P1,#0FBH
+0034 80CA              SJMP    ?C0001
+                                           ; SOURCE LINE # 10
+0036         ?C0008:
+0036 7590EB            MOV     P1,#0EBH
+0039 80C5              SJMP    ?C0001
+                                           ; SOURCE LINE # 11
+003B         ?C0009:
+003B 7590F3            MOV     P1,#0F3H
+003E 80C0              SJMP    ?C0001
+                                           ; SOURCE LINE # 12
+0040         ?C0010:
+0040 7590E3            MOV     P1,#0E3H
+0043 80BB              SJMP    ?C0001
+                                           ; SOURCE LINE # 13
+0045         ?C0011:
+0045 7590FD            MOV     P1,#0FDH
+0048 80B6              SJMP    ?C0001
+                                           ; SOURCE LINE # 14
+004A         ?C0012:
+004A 7590FF            MOV     P1,#0FFH
+004D 80B1              SJMP    ?C0001
+C51 COMPILER V9.01   EXP2                                                                  10/21/2021 11:08:17 PAGE 3   
+
+             ; FUNCTION main (END)
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     79    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,21 @@
+ORG 0000H	     
+LJMP MAIN	
+ORG 0080H	
+MAIN:
+	MOV P1,#0FFH
+LOOP1:
+	JB P1.0,LOOP1 ;检测下降沿
+	INC A  	   ;检测到一个下降沿
+	ACALL CHECK
+LOOP2:
+	JNB	P1.0,LOOP2;检测上升沿
+	INC A	   ;检测到一个上升沿
+	ACALL CHECK
+	AJMP LOOP1
+CHECK:
+	CJNE A,#32H,D1;检测到的周期个数与设定的分频系数比较，3分频
+	CLR A
+	CPL P2.0
+D1:
+	RET
+	END     

@@ -1,0 +1,81 @@
+A51 MACRO ASSEMBLER  EXQ                                                                  10/31/2019 22:51:52 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\exq.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exq.asm SET(SMALL) DEBUG PRINT(.\Listings\exq.lst) OBJECT(.\Objects\exq
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1           ORG 0000H
+0000 020080            2             LJMP MAIN 
+0080                   3             ORG 0080H
+0080                   4     MAIN:
+0080 7A22              5             MOV R2,#22H
+0082 7B05              6             MOV R3,#05H
+0084 7431              7             MOV A,#31H;????49
+0086                   8     CHECK1:
+0086 9A                9             SUBB A,R2
+0087 30E703           10             JNB Acc.7,CHECK2
+008A 0200BA           11             LJMP LOOP1
+008D                  12     CHECK2:
+008D 9B               13             SUBB A,R3
+008E 20E729           14             JB Acc.7,LOOP1
+0091                  15     LOOP:
+0091 20A703           16             JB P2.7,ADD1;
+0094 0200A0           17              LJMP SUBB1
+0097                  18     ADD1:
+0097 EA               19             MOV A,R2
+0098 2B               20             ADD A,R3
+0099 D4               21             DA A
+009A F4               22             CPL A
+009B F590             23             MOV P1,A
+009D 020091           24              LJMP LOOP
+00A0                  25     SUBB1:
+00A0 EB               26             MOV A,R3
+00A1 64FF             27             XRL A,#0FFH 
+00A3 2A               28             ADD A,R2
+00A4 20E707           29             JB Acc.7,SUBB2
+00A7 D4               30             DA A
+00A8 F4               31             CPL A
+00A9 F590             32             MOV P1,A
+00AB 020091           33             LJMP LOOP
+00AE                  34     SUBB2:
+00AE EA               35             MOV A,R2
+00AF 64FF             36             XRL A,#0FFH 
+00B1 2B               37             ADD A,R3
+00B2 D4               38             DA A
+00B3 F4               39             CPL A
+00B4 F590             40             MOV P1,A  
+00B6 020091           41             LJMP LOOP
+00B9 22               42             RET
+00BA                  43     LOOP1:
+00BA 759000           44             MOV P1,#00H;??????????49,?????LED??
+00BD 22               45             RET
+                      46             END
+A51 MACRO ASSEMBLER  EXQ                                                                  10/31/2019 22:51:52 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ADD1 . . . . . . .  C ADDR   0097H   A   
+CHECK1 . . . . . .  C ADDR   0086H   A   
+CHECK2 . . . . . .  C ADDR   008DH   A   
+LOOP . . . . . . .  C ADDR   0091H   A   
+LOOP1. . . . . . .  C ADDR   00BAH   A   
+MAIN . . . . . . .  C ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SUBB1. . . . . . .  C ADDR   00A0H   A   
+SUBB2. . . . . . .  C ADDR   00AEH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

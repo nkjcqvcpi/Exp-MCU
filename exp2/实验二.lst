@@ -1,0 +1,112 @@
+A51 MACRO ASSEMBLER  ส_ั__þ                                                               10/21/2021 10:36:40 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN .\สตั้ถþ.obj
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE F:\สตั้ถþ.a51 SET(SMALL) DEBUG PRINT(.\สตั้ถþ.lst) OBJECT(.\สตั้ถþ.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+0000 0130              2             AJMP MAIN
+0030                   3             ORG  0030H
+0030                   4     MAIN:
+0030 75B0F0            5             MOV  P3, #0F0H
+0033 120094            6             LCALL DELAY
+0036 AC00              7             MOV  R4, 00H
+0038 E5B0              8             MOV  A, P3
+003A 54F0              9             ANL  A, #0F0H
+003C B4F009           10             CJNE A, #0F0H, L
+003F                  11     DESPLAY:
+003F EF               12             MOV  A, R7
+0040 90009D           13             MOV  DPTR, #TABLE
+0043 93               14             MOVC A, @A+DPTR
+0044 F590             15             MOV  P1, A
+0046 0130             16             AJMP MAIN 
+0048                  17     L:
+0048 120094           18             LCALL DELAY
+004B E5B0             19             MOV  A, P3
+004D 20E404           20             JB  ACC.4, L1
+0050 7B00             21             MOV  R3, #00H
+0052 0169             22             AJMP Q1
+0054                  23     L1:
+0054 20E504           24             JB  ACC.5, L2
+0057 7B01             25             MOV  R3, #01H
+0059 0169             26             AJMP Q1
+005B                  27     L2:
+005B 20E604           28             JB  ACC.6, L3
+005E 7B02             29             MOV  R3, #02H
+0060 0169             30             AJMP Q1
+0062                  31     L3:
+0062 20E7CB           32             JB  ACC.7, MAIN
+0065 7B03             33             MOV  R3, #03H
+0067 0169             34             AJMP Q1
+0069                  35     Q1:
+0069 75B00F           36             MOV  P3, #0FH
+006C 120094           37             LCALL DELAY
+006F E5B0             38             MOV  A, P3
+0071 540F             39             ANL  A, #0FH
+0073 20E004           40             JB  ACC.0, Q2
+0076 7C00             41             MOV  R4, #00H
+0078 018F             42             AJMP JIA
+007A                  43     Q2:
+007A 20E104           44             JB  ACC.1, Q3
+007D 7C04             45             MOV  R4, #04H
+007F 018F             46             AJMP JIA
+0081                  47     Q3:
+0081 20E204           48             JB  ACC.2, Q4
+0084 7C08             49             MOV  R4, #08H
+0086 018F             50             AJMP JIA
+0088                  51     Q4:
+0088 20E3A5           52             JB  ACC.3, MAIN
+008B 7C0C             53             MOV  R4, #0CH
+008D 018F             54             AJMP JIA
+008F                  55     JIA:
+008F EB               56             MOV  A, R3
+0090 2C               57             ADD  A, R4
+0091 FF               58             MOV  R7, A
+A51 MACRO ASSEMBLER  ส_ั__þ                                                               10/21/2021 10:36:40 PAGE     2
+
+0092 0130             59             AJMP MAIN
+0094                  60     DELAY:
+0094 7E20             61             MOV  R6, #20H
+0096                  62     Q6:
+0096 7DBB             63             MOV  R5, #0BBH
+0098 DDFE             64             DJNZ R5,$
+009A DEFA             65                     DJNZ R6,Q6
+009C 22               66                     RET
+009D                  67     TABLE:
+009D EFF8E8FC         68             DB 0EFH, 0F8H, 0E8H, 0FCH, 0ECH, 0F2H, 0E2H
+00A1 ECF2E2                  
+                      69             END
+A51 MACRO ASSEMBLER  ส_ั__þ                                                               10/21/2021 10:36:40 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+DELAY. . . . . . .  C ADDR   0094H   A   
+DESPLAY. . . . . .  C ADDR   003FH   A   
+JIA. . . . . . . .  C ADDR   008FH   A   
+L. . . . . . . . .  C ADDR   0048H   A   
+L1 . . . . . . . .  C ADDR   0054H   A   
+L2 . . . . . . . .  C ADDR   005BH   A   
+L3 . . . . . . . .  C ADDR   0062H   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+Q1 . . . . . . . .  C ADDR   0069H   A   
+Q2 . . . . . . . .  C ADDR   007AH   A   
+Q3 . . . . . . . .  C ADDR   0081H   A   
+Q4 . . . . . . . .  C ADDR   0088H   A   
+Q6 . . . . . . . .  C ADDR   0096H   A   
+TABLE. . . . . . .  C ADDR   009DH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

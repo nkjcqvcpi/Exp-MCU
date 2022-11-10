@@ -1,0 +1,53 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        10/09/2019  09:30:37  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE 38LED.obj TO 38LED
+
+
+INPUT MODULES INCLUDED:
+  38LED.obj (38LED)
+
+
+LINK MAP OF MODULE:  38LED (38LED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     009AH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  38LED (38LED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        38LED
+  C:0093H         SYMBOL        D1
+  C:0095H         SYMBOL        D2
+  C:0091H         SYMBOL        DELAY
+  C:0080H         SYMBOL        MAIN
+  D:0090H         SYMBOL        P1
+  C:0000H         LINE#         2
+  C:0080H         LINE#         4
+  C:0083H         LINE#         5
+  C:0085H         LINE#         6
+  C:0088H         LINE#         7
+  C:008AH         LINE#         8
+  C:008DH         LINE#         9
+  C:008FH         LINE#         10
+  C:0091H         LINE#         11
+  C:0093H         LINE#         12
+  C:0095H         LINE#         13
+  C:0097H         LINE#         14
+  C:0099H         LINE#         15
+  -------         ENDMOD        38LED
+
+Program Size: data=8.0 xdata=0 code=154
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

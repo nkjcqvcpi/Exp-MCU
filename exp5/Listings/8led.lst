@@ -1,0 +1,68 @@
+A51 MACRO ASSEMBLER  8LED                                                                 11/06/2019 11:29:58 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\8led.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE 8led.asm SET(SMALL) DEBUG PRINT(.\Listings\8led.lst) OBJECT(.\Objects\8
+                      led.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                     ORG   0000H;
+0000 020080            2                     LJMP  MAIN
+000B                   3             ORG   000BH;
+000B 02009C            4             LJMP  ITOP;
+0080                   5             ORG   0080H
+0080                   6     MAIN:   
+0080 75807F            7                     MOV P0,#7FH;
+0083 E580              8             MOV A,P0
+0085 758160            9             MOV SP,#60H
+0088 75F014           10             MOV B,#14H;
+008B 758901           11             MOV TMOD,#01H;
+008E 758AB0           12             MOV TL0,#0B0H;
+0091 758C3C           13             MOV TH0,#3CH;
+0094 D2A9             14             SETB ET0;
+0096 D2AF             15             SETB EA;
+0098 D28C             16             SETB TR0;
+009A                  17     HERE:   
+009A 80FE             18                     SJMP HERE
+009C                  19     ITOP:  
+009C 758AB0           20                     MOV TL0,#0B0H;
+009F 758C3C           21             MOV TH0,#3CH;
+00A2 D5F00C           22             DJNZ B,RETURN;
+00A5 C28C             23             CLR TR0;
+00A7 7B01             24             MOV R3,#01H;
+00A9 03               25             RR A;
+00AA F580             26             MOV P0,A
+00AC 75F014           27             MOV B,#14H;
+00AF D28C             28             SETB TR0;
+00B1                  29     RETURN:  
+00B1 32               30                     RETI
+                      31                     END
+A51 MACRO ASSEMBLER  8LED                                                                 11/06/2019 11:29:58 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+HERE . . . . . . .  C ADDR   009AH   A   
+ITOP . . . . . . .  C ADDR   009CH   A   
+MAIN . . . . . . .  C ADDR   0080H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+RETURN . . . . . .  C ADDR   00B1H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

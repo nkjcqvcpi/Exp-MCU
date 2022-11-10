@@ -1,0 +1,61 @@
+A51 MACRO ASSEMBLER  41                                                                   11/11/2021 10:10:35 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN 41.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE 41.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H       ;       
+0000 020003            2     LJMP MAIN       ;
+0003                   3     MAIN:
+0003 75A0FE            4             MOV P2,#0FEH
+0006 7900              5             MOV R1,#00
+0008 900080            6             MOV DPTR,#0080H
+000B E9                7             MOV A,R1
+000C                   8     LOOP1:
+000C B40A03            9             CJNE A,#0AH,LOOP
+000F 7900             10             MOV R1,#00
+0011 E9               11             MOV A,R1
+0012                  12     LOOP:
+0012 93               13             MOVC A,@A+DPTR
+0013 F580             14             MOV P0,A
+0015 111B             15             ACALL DELay     ;
+0017 09               16             INC R1
+0018 E9               17             MOV A,R1
+0019 110C             18             ACALL LOOP1
+001B 7F0A             19     DElay:  MOV R7,#10      ;ÑÓÊ±×Ó³ÌÐò
+001D 7EC8             20     DEL1:   MOV R6,#200
+001F 7DF8             21     DEL2:   MOV R5,#248
+0021 DDFE             22     DJNZ R5,$
+0023 DEFA             23     DJNZ R6,DEL2
+0025 DFF6             24     DJNZ R7,DEL1
+0027 22               25     RET     
+0080                  26     ORG 0080H       ;
+0080 C0F9A4B0         27     DB  0C0H, 0F9H, 0A4H, 0B0H, 99H, 92H, 82H, 0F8H, 80H, 90H
+0084 999282F8                
+0088 8090                    
+                      28     END
+A51 MACRO ASSEMBLER  41                                                                   11/11/2021 10:10:35 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DEL1 . . . . . . .  C ADDR   001DH   A   
+DEL2 . . . . . . .  C ADDR   001FH   A   
+DELAY. . . . . . .  C ADDR   001BH   A   
+LOOP . . . . . . .  C ADDR   0012H   A   
+LOOP1. . . . . . .  C ADDR   000CH   A   
+MAIN . . . . . . .  C ADDR   0003H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

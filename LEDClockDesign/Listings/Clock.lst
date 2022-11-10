@@ -1,0 +1,59 @@
+A51 MACRO ASSEMBLER  CLOCK                                                                11/27/2019 23:40:10 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Clock.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Clock.asm SET(SMALL) DEBUG PRINT(.\Listings\Clock.lst) OBJECT(.\Objects
+                      \Clock.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                     ORG 0000H
+0000                   2     RESET:
+0000 020100            3                     LJMP MAIN
+000B                   4                     ORG 000BH
+000B                   5                     LJMP IT0P
+*** ______________________________________________^
+*** ERROR #A45 IN 5 (Clock.asm, LINE 5): UNDEFINED SYMBOL (PASS-2)
+001B                   6                     ORG 001BH
+001B                   7                     LJMP IT1P
+*** ______________________________________________^
+*** ERROR #A45 IN 7 (Clock.asm, LINE 7): UNDEFINED SYMBOL (PASS-2)
+0100                   8                     ORG 0100H
+0100                   9     MAIN:
+0100 758960           10                     MOV TMOD,#60H
+0103 758B9C           11                     MOV TL1,#9CH
+0106 758D9C           12                     MOV TH1,#9CH
+0109 D2AF             13                     SETB EA
+010B D2AB             14                     SETB ET1
+010D                  15                     SETB TB1
+*** ______________________________________________^
+*** ERROR #A45 IN 15 (Clock.asm, LINE 15): UNDEFINED SYMBOL (PASS-2)
+010F                  16     HERE:
+010F 210F             17                     AJMP HERE
+                      18                     END
+A51 MACRO ASSEMBLER  CLOCK                                                                11/27/2019 23:40:10 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET1. . . . . . . .  B ADDR   00A8H.3 A   
+HERE . . . . . . .  C ADDR   010FH   A   
+IT0P . . . . . . .    ----   -----       
+IT1P . . . . . . .    ----   -----       
+MAIN . . . . . . .  C ADDR   0100H   A   
+RESET. . . . . . .  C ADDR   0000H   A   
+TB1. . . . . . . .    ----   -----       
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 3 ERROR(S)

@@ -1,0 +1,59 @@
+A51 MACRO ASSEMBLER  42                                                                   11/11/2021 10:36:40 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN 42.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE 42.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H       ;       
+0000 020080            2     LJMP MAIN       ;
+0080                   3     ORG 0080H       ;
+0080                   4     MAIN:
+0080 75803F            5             MOV P0,#3FH     ;
+0083 75A000            6         MOV P2,#0H;
+0086 1198              7             ACALL DELay     ;
+0088                   8     LOOP:
+0088 A8A0              9             mov R0, P2
+008A B80805           10             CJNE R0,#08H,l0
+008D 75A000           11             mov P2, #00
+                      12             ;MOV A,P2
+                      13         ;RL A
+                      14         ;MOV P2,A
+                      15         
+0090 0188             16             AJMP LOOP;
+0092                  17     l0:
+0092 05A0             18             INC P2
+0094 1198             19             ACALL DELay     ;       
+0096 0188             20             AJMP LOOP;
+0098 7F0A             21     DElay:  MOV R7,#10      ;ÑÓÊ±×Ó³ÌÐò
+009A 7EC8             22     DEL1:   MOV R6,#200
+009C 7DF8             23     DEL2:   MOV R5,#248
+009E DDFE             24     DJNZ R5,$
+00A0 DEFA             25     DJNZ R6,DEL2
+00A2 DFF6             26     DJNZ R7,DEL1
+00A4 22               27     RET
+                      28     END
+A51 MACRO ASSEMBLER  42                                                                   11/11/2021 10:36:40 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DEL1 . . . . . . .  C ADDR   009AH   A   
+DEL2 . . . . . . .  C ADDR   009CH   A   
+DELAY. . . . . . .  C ADDR   0098H   A   
+L0 . . . . . . . .  C ADDR   0092H   A   
+LOOP . . . . . . .  C ADDR   0088H   A   
+MAIN . . . . . . .  C ADDR   0080H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

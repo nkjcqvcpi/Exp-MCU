@@ -1,0 +1,28 @@
+ORG 0000H	;       
+LJMP MAIN	;
+ORG 0080H	;
+MAIN:
+	MOV P0,#3FH	;
+    MOV P2,#0H;
+	ACALL DELay	;
+LOOP:
+	mov R0, P2
+	CJNE R0,#08H,l0
+	mov P2, #00
+	;MOV A,P2
+    ;RL A
+    ;MOV P2,A
+    
+	AJMP LOOP;
+l0:
+	INC P2
+	ACALL DELay	;	
+	AJMP LOOP;
+DElay:  MOV R7,#10	;延时子程序
+DEL1:	MOV R6,#200
+DEL2: 	MOV R5,#248
+DJNZ R5,$
+DJNZ R6,DEL2
+DJNZ R7,DEL1
+RET
+END

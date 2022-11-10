@@ -1,0 +1,846 @@
+实验一
+1.P1口八个灯作3路跑马灯。分别往端口送三个不同的数，理解数字和端口的对应关系。
+ORG 0000H	;       
+    	LJMP MAIN	;
+    	ORG 0080H	;
+MAIN:	MOV P1,#0DBH	;11011011--零为亮
+    	ACALL DELay	;
+    	MOV P1,#06DH	;01101101
+    	ACALL DELay	;
+    	MOV P1,#0B6H	;10110110
+    	ACALL DELay	;
+   	AJMP MAIN	;
+delay:  mov r7,#255	;延时子程序
+d1:	mov r6,#255
+d2:	djnz r6,d2
+   	djnz r7,d1
+   	ret
+   	end
+
+2. 8个LED轮流显示
+	ORG 0000H	;       
+    	LJMP MAIN	;
+    	ORG 0080H	;
+MAIN:	MOV P1,#0FEH	;11111110--零为亮
+    	ACALL DELay	;
+    	MOV P1,#0FDH	;11111101
+    	ACALL DELay	;
+    	MOV P1,#0FBH	;11111011
+    	ACALL DELay	;
+		MOV P1,#0F7H	;11110111
+    	ACALL DELay	;
+    	MOV P1,#0EFH	;11101111
+    	ACALL DELay	;
+    	MOV P1,#0DFH	;11011111
+    	ACALL DELay	;
+    	MOV P1,#0BFH	;10111111
+    	ACALL DELay	;
+    	MOV P1,#07FH	;01111111
+    	ACALL DELay	;
+   	    AJMP MAIN	;
+delay:  mov r7,#100	;延时子程序
+d1:	    mov r6,#100
+d2:	    djnz r6,d2
+   	    djnz r7,d1
+   	    ret
+   	    end
+
+
+
+实验二
+选择拨动开关作为单片机输入信号，采用LED实时指示开关编号（二进制数表示）
+	ORG	0000H
+	LJMP 	START
+	ORG	0080H
+START:  MOV P1,#0FFH；P1开关
+	MOV P0,#00H ；P0灯
+
+MAIN:	MOV A,P1
+        CPL A   
+	CJNE A,#01H,NXET1
+        CPL A
+	MOV P0,A
+	LJMP MAIN
+NXET1: CJNE A,#02H,NXET2
+       CPL A
+        	MOV P0,A
+	LJMP MAIN
+NXET2:CJNE A,#04H,NXET3
+        CPL A
+       	MOV P0,A
+	LJMP MAIN
+NXET3:CJNE A,#08H,NXET4
+      CPL A
+        	MOV P0,A
+	LJMP MAIN
+NXET4: CJNE A,#010H,NXET5
+       CPL A
+        	MOV P0,A
+	LJMP MAIN
+NXET5: CJNE A,#020H,NXET6
+CPL A
+        	MOV P0,A
+	LJMP MAIN
+NXET6:CJNE A,#040H,NXET7
+       CPL A
+        	MOV P0,A
+	LJMP MAIN
+NXET7:CJNE A,#080H,NXET
+       CPL A
+        	MOV P0,A
+	LJMP MAIN
+NXET:	MOV P0,#0FFH
+        	LJMP MAIN
+END	
+
+实验三：简单程序设计二	
+  （1）选择函数发生器输出TTL信号输入单片机的某I/O口，经单片机分频后从另一I/O口输出，I/O口
+       分配自定，分频比范围1-10，要求分频比在程序中可进行设置。
+        ORG 0000H	     
+    	LJMP MAIN	
+    	ORG 0080H	
+MAIN:	  MOV P1,#0FFH
+LOOP1:  JB P1.0,LOOP1;检测下降沿
+	   INC  A  	   ;检测到一个下降沿
+	   ACALL CHECK
+LOOP2:   JNB	P1.0,LOOP2;检测上升沿
+	   INC  A	   ;检测到一个上升沿
+	   ACALL CHECK
+	   AJMP LOOP1
+
+CHECK: CJNE A,#03H,D1;检测到的周期个数与设定的分频系数比较，3分频
+	 CLR   A
+	 CPL P0.0
+D1:	 RET
+END     
+  (2)实现2位10进制有符号数（0-49）的加，减运算，拨动开关选择加或减运算，LED指示运算结果。采用仿真器仿真运行，
+     数据输入采用存储器直接置数，存储器分配自定。画出程序设计流程图，程序必须加以注释。
+        ORG 0000H
+   	LJMP MAIN 
+   	ORG 0080H
+MAIN:
+   	MOV R2,#22H
+   	MOV R3,#05H
+   	MOV A,#31H;十进制的49
+CHECK1:
+   	SUBB A,R2
+   	JNB Acc.7,CHECK2
+   	LJMP LOOP1
+CHECK2:
+   	SUBB A,R3
+   	JB Acc.7,LOOP1
+LOOP:
+   	JB P2.7,ADD1;P2.7为高电平，则作加运算，反之则作减运算
+  	 LJMP SUBB1
+ADD1:
+  	 MOV A,R2
+   	ADD A,R3
+   	CPL A
+   	MOV P1,A
+  	 LJMP LOOP
+SUBB1:
+  	 MOV A,R2
+   	SUBB A,R3
+   	JB Acc.7,SUBB2
+   	CPL A
+  	MOV P1,A
+   	LJMP LOOP
+SUBB2:
+   	MOV A,R3
+   	SUBB A,R2
+   	SETB Acc.7
+   	CPL A
+   	MOV P1,A  
+   	LJMP LOOP
+   	RET
+LOOP1:
+   	MOV P1,#00H;如果参与运算的数大于49，则让所有的LED均亮
+   	RET
+  	 END
+实验四
+1、 10进制计数器（0-9），间隔1秒（软件延时）自动加1，并将计数值显示在一位数码管上
+ORG 0000H	;       
+LJMP MAIN	;
+MAIN: 		MOV  P2,#0FEH
+      		MOV R1,#00
+     	 	MOV  DPTR,#0080H
+     	 	MOV   A,R1
+LOOP1:  	CJNE   A,#0AH,LOOP
+        		MOV R1,#00
+        		MOV   A,R1
+ LOOP:		MOVC  A,@A+DPTR
+        	   	MOV   P0,A
+        	   	ACALL DELay	;
+             	INC R1
+             	MOV   A,R1
+ACALL   LOOP1
+DElay:  	MOV R7,#10	;延时子程序
+DEL1:	    	MOV R6,#200
+DEL2:      	MOV R5,#248
+DJNZ     R5,$
+DJNZ R6,DEL2
+DJNZ R7,DEL1
+RET    	
+	  ORG 0080H	;
+DB  28H,7EH,0A2H,62H,74H,61H,21H,7AH,20H,60H
+END
+
+2、8位数码管轮流显示固定数0
+ORG 0000H	;       
+	LJMP MAIN	;
+	ORG 0080H	;
+MAIN:	MOV P0,#028H	;
+       	MOV P2,#0FEH;
+	ACALL DELay	;
+LOOP: MOV A,P2
+       	RL  A
+      	MOV   P2,A
+     	ACALL DELay	;
+AJMP LOOP;
+DElay:  MOV R7,#10	;延时子程序
+DEL1:	MOV R6,#200
+DEL2: 	MOV R5,#248
+DJNZ     R5,$
+DJNZ R6,DEL2
+DJNZ R7,DEL1
+RET
+END
+3、在8位数码管上稳定显示0-7（程序有误）
+ORG    0000H     ;程序的初始位置
+LJMP   MAIN      ;跳到程序的起始位置
+ORG    0100H
+MAIN:  MOV    DPTR,#TABLE ;将表文件头的地址赋给基址		
+       	MOV    R3,#00H     ;将R3置0
+       	MOV    P2,#0FEH
+LOOP1: MOV    A,R3        ;将R3置给A
+       	MOVC   A,@A+DPTR	  ;基址加变址查表内容赋给A	
+       	MOV    P0,A        ;将A给P0口
+       	INC    R3
+   	MOV    A,P2
+       	RL     A
+       	MOV    P2,A
+       	CJNE   R3,#8,LOOP1;
+      	 AJMP   MAIN
+TABLE:  DB   28H,07EH,0A2H,62H,74H,61H,21H,7AH
+        END
+
+4、通过K01（JP37）产生外部中断请求（/INT0）信号，K02产生外部中断请求（/INT1）信号，在对应的中断服务程序实现在一位数码管上显示中断源编号（0或1）。
+ORG 	0000H
+        	LJMP MAIN
+ORG 	0003H  ;外部中断口0的地址入口
+ 	LJMP INT_0
+ORG 0013H  ;外部中断口1的地址入口
+LJMP INT_1
+        	ORG 0080H
+MAIN: MOV SP,#30H
+          SETB EA  ;打开中断总开关
+ 	SETB EX0  ;打开外部中断0
+	SETB EX1  ;打开外部中断1
+	SETB IT0
+	SETB IT1
+	SJMP $
+INT_0:CLR EX0  ;关外部中断0
+           PUSH PSW  ;现场保护
+           PUSH ACC
+	SETB EX0  ;打开外部中断0
+	 LCALL DELAY  ;调用延时10ms，去抖动  
+	 JB P3.2,RETURN1	;若K0为高电平则跳出
+            MOV P0,#28H  ;否则数码管显示0
+RETURN1: CLR EX0
+                POP ACC  ;现场恢复
+	      POP PSW
+	      SETB EX0
+                RETI
+INT_1:CLR EX1  ;关外部中断1
+          PUSH PSW  ;现场保护
+          PUSH ACC
+SETB EX1  ;打开外部中断1
+LCALL DELAY  ;调用延时10ms，去抖动
+JB P3.3,RETURN2  ;若K1为高电平则跳出
+          MOV P0,#7EH  ;否则会数码管显示1
+RETURN2: CLR EX1
+          	      POP ACC  ;现场恢复
+	      POP PSW
+	      SETB EX1
+RETI  
+DELAY:MOV R7,#100
+D1:   	MOV R6,#100
+D2:   	DJNZ R6,D2
+     	DJNZ R7,D1
+	RET	 
+	END
+5、设计一个10进制计数器（0-9），选择一个按键（K01-K04任选）产生外部中断信号/INT0（或/INT1），每按一次计数器加1，并将计数值显示在一位数码管上
+ORG    0000H;程序的初始位置
+LJMP   MAIN  ;跳到程序的起始位置
+ORG    0003H ;外部中断程序0入口
+LJMP   INT       ;跳到中断程序的起始位置		
+ORG    0100H
+MAIN: CLR    IT0         ;采用低电平触发
+          SETB   EX0         ;允许外部中断0中断
+          SETB   EA          ;开启总中断
+          MOV    R3,#00H     ;将R3置0
+          MOV    DPTR,#TABLE ;将表文件头的地址赋给基址		
+LOOP: MOV    A,R3        ;将R3置给A
+          MOVC   A,@A+DPTR	  ;基址加变址查表内容赋给A	
+          MOV    P0,A        ;将A给P0口
+          AJMP   LOOP
+DELAY:  MOV R7,#25       ;延时程序
+LOOP3:  MOV R6,#50
+LOOP2:  MOV R5,#50
+LOOP1:  DJNZ R5,LOOP1
+        DJNZ R6,LOOP2
+        DJNZ R7,LOOP3
+        RET 
+INT:      ACALL  DELAY          ;中断程序  
+LOOP4: JNB    P3.2,LOOP4
+            ACALL  DELAY
+LOOP5: JNB    P3.2,LOOP5     ;去抖动
+            INC    R3             ;R3加一 
+            CJNE   R3,#10,RETURN  ;若R3不为10则转移  
+            MOV    R3,#0          ;将R3置0 
+RETURN: RETI
+TABLE:  DB   028H,07EH,0A2H,62H,74H,61H,21H,7AH,20H,60H
+        END                  ;程序结束
+
+实验五
+1、8led轮流显示（方式1）
+ORG   0000H;程序入口
+        	LJMP  MAIN
+        	ORG   000BH;T0的中断入口
+       	LJMP  ITOP;转T0中断处理子程序IT0P
+        	ORG   0080H
+MAIN: MOV P0,#7FH;先亮第一盏灯
+          MOV A,P0
+          MOV SP,#60H
+          MOV B,#14H;一次定时50ms，一共循环20次
+          MOV TMOD,#01H;采用定时器T0，方式1
+          MOV TL0,#0B0H;给T0设初值
+          MOV TH0,#3CH;
+          SETB ET0;允许T0中断
+          SETB EA;总中断允许
+          SETB TR0;启动T0计数
+HERE: SJMP HERE
+ITOP:  MOV TL0,#0B0H;进入T0中断服务子程序，给T0重新装入初值
+          MOV TH0,#3CH;
+          DJNZ B,RETURN;B为中断次数计数器，B减1非0则中断返回
+          CLR TR0;1s定时时间到，停止T0工作
+          MOV R3,#01H;1s定时完成时，就将R3值设为01H，作为标志
+          RR A;A右移
+          MOV P0,A
+          MOV B,#14H; 时50ms，一共循环20次
+          SETB TR0;重新启动T0计数
+RETURN:  RETI
+      END
+
+
+
+1.（拓展部分）时间间隔0.5~2秒可调，时间步进为0.2秒，采用按键（K01
+~K04任选一个）产生外部中断信号，作为时间间隔选择输入，中断服务程序调
+整时间间隔。
+      ORG  0000H
+RESET:  LJMP MAIN
+        ORG  0003H;外部中断0入口
+        LJMP INT
+        ORG  000BH
+        LJMP IT0P
+        ORG  0100H
+MAIN: MOV  SP,#60H
+        MOV  R4,#10
+        MOV  R3,#10
+        MOV  P1,#0FEH
+        MOV  TMOD,#01H	;T0为方式1定时
+        MOV  TL0,#0B0H
+        MOV  TH0,#3CH
+        CLR    IT0
+        SETB   EX0         ;允许外部中断0中断
+        SETB  ET0
+        SETB  EA
+        SETB  TR0
+        SETB  PX0
+        CLR   PT0
+HERE:   SJMP  HERE
+IT0P:   MOV   TL0,#0B0H
+        MOV   TH0,#3CH
+        DJNZ  R4,RETURN
+        MOV  B,R3
+        MOV  R4,B
+        MOV  A,P1
+        RL   A
+        MOV  P1,A
+RETURN: RETI
+DELAY:  MOV R7,#25       ;延时程序
+D1:     MOV R6,#200
+        DJNZ R6,$
+        DJNZ R7,D1
+        RET
+INT:   ACALL  DELAY          ;中断程序  
+LOOP4: JNB    P3.2,LOOP4
+       ACALL  DELAY
+LOOP5: JNB    P3.2,LOOP5     ;去抖动
+       INC R3
+       INC R3
+       INC R3
+       INC R3
+       CJNE   R3,#42,RETURN1  ;  
+       MOV    R3,#10
+RETURN1: RETI
+END
+1、（方式2）
+ORG   0000H;程序入口
+        LJMP  MAIN
+        ORG   000BH;T0的中断入口
+        LJMP  ITOP;转T0中断处理子程序IT0P
+        ORG   0080H
+MAIN: MOV P0,#7FH;先亮第一盏灯
+          MOV A,P0
+          MOV SP,#60H
+          MOV B,#50H;一次定时250μs，一共循环50*80次
+          MOV TMOD,#02H;采用定时器T0，方式2
+          MOV TL0,#06H;给T0设初值
+          MOV TH0,#06H;
+          SETB ET0;允许T0中断
+          SETB EA;总中断允许
+          SETB TR0;启动T0计数
+HERE: SJMP HERE
+ITOP:  DJNZ B,RETURN;B为中断次数计数器，B减1非0则中断返回
+          MOV  B,#50H
+          INC   R4
+          CJNE R4,#32H,RETURN
+          RR A;A右移
+          MOV P0,A
+          MOV  B,#50H
+          MOV  R4,#00H
+RETURN:  RETI
+      END
+
+2、P0.0输出频率为1KHz的矩形波信号（方式1）
+ORG 0000H
+         LJMP MAIN
+         ORG 000BH	;T0的中断入口
+         LJMP IT0P
+         ORG 0080H;主程序入口
+MAIN: MOV SP,#60H
+          MOV TMOD,#01H  ;设置T0在方式1定时
+MOV TH0,#0FEH;设初始值
+MOV TL0,#0CH  	
+SETB EA  ;总中断允许
+SETB ET0;允许T0中断
+SETB TR0  ;启动T0	
+HERE: SJMP HERE
+IT0P: MOV TL0,#0CH  ;进入T0中断服务子程序，给T0重新装入初始值
+MOV TH0,#0FEH
+CPL P0.0 
+        RETI
+END
+
+2、（方式2）
+ORG 0000H
+         LJMP MAIN
+         ORG 000BH;T0的中断入口
+         LJMP IT0P
+         ORG 0080H
+MAIN:  MOV SP,#60H
+           MOV B,#5  ;循环次数为5次
+	 MOV TMOD,#02H  ;T0在方式2定时
+	 MOV TL0,#156  ;设初始值
+	 MOV TH0,#156
+	 SETB EA  ;打开中断开关
+	 SETB ET0
+	 SETB TR0  ;启动T0
+	 SETB P0.0
+HERE:  SJMP HERE
+IT0P:   DJNZ B,RETURN
+          MOV  B,#5
+          CPL  P0.0
+RETURN:RETI
+      END
+
+3、频率计
+#include<reg52.h>
+#define u8 unsigned char
+#define u16 unsigned int 
+u8 cnt=0;
+u8 flag=0;
+
+char deng[]={0xfe,0xfd,0xfc,0xfb,0xfa,0xf9,0xf8,0xf7,0xf6,0xf5};
+
+void main()
+{
+	int F;
+	u16 time=0;
+	ET0=1;//定时器T0中打开
+	ET1=1;//定时器T1中打开
+	TMOD=0x51;//定时器T0方式1,定时模式
+			  //定时器T1计数模式,方式1
+	TH1=0;
+	TL1=0;
+	TH0=0x3C;//定时50ms
+	TL0=0xB0;
+	EA=1;//中断总开关开
+	TR1=1;
+	TR0=1;
+	while(flag==0);
+	F=TH1*256+TL1;//TH1每增1即TL1计满一次
+	F=F/1000;	
+	while(1){
+		P2=deng[F-1];	
+	}
+}
+void interrupttimer0()interrupt 1
+{		
+	TH0=0x3C;//定时50ms
+	TL0=0xB0;
+	cnt++;
+	if(cnt>=20)//定时1s时间到
+	{  		
+		EA=0;
+		TR1=0; 
+		cnt=0;
+		flag=1;	   		   
+	}		
+}
+
+
+1s内脉冲个数
+ORG 0000H
+     	 LJMP MAIN
+      	ORG 000BH
+      	LJMP IT0P
+      	ORG 0100H
+MAIN:MOV SP,#60H;T0是1s定时，T1是脉冲个数
+     	MOV R1,#00H
+     	MOV R2,#00H
+     	MOV TMOD,#52H
+     	MOV TH1,#00H
+     	MOV TL1,#00H
+     	MOV TL0,#9CH
+     	MOV TH0,#9CH
+	SETB EA
+	SETB TR0
+    	SETB TR1
+     	SETB ET0
+	SETB ET1
+HERE:SJMP HERE
+IT0P:	INC R1
+        	CJNE R1,#64H,RETURN
+       	MOV R1,#00H
+       	INC R2
+        	CJNE R2,#64H,RETURN
+        	CLR  EA
+MOV A,TH1(TL1)
+MOV P0,A
+RETURN: RETI
+    END
+高电平
+ORG    0000H     
+	 LJMP   MAIN    
+	 ORG    0100H
+MAIN: MOV SP,#60H
+       MOV TMOD,#90H
+	  MOV TL1,#00H
+	 MOV TH1,#00H
+LOOP0:JB P3.3,LOOP0
+     SETB TR1
+LOOP1:JNB P3.3,LOOP1
+LOOP2:JB  P3.3,LOOP2
+      CLR TR1
+	  MOV A,TL1
+	  MOV P0,A
+            MOV A,TH1
+         MOV P1,A
+HERE:SJMP HERE
+     END
+
+
+
+占空比
+ORG    0000H     
+	 LJMP   MAIN    
+   	 ORG    0003H
+	 LJMP   INT_0
+	 ORG    0100H
+MAIN: MOV SP,#60H
+     MOV TMOD,#91H
+	  MOV TL1,#00H
+	 MOV TH1,#00H
+	 MOV TL0,#00H
+	 MOV TH0,#00H
+	 MOV R0,#00H
+	 SETB EA
+	 SETB EX0
+	 SETB ET0
+	 SETB IT0
+	
+LOOP0:JB P3.3,LOOP0
+     SETB TR1
+LOOP1:JNB P3.3,LOOP1
+LOOP2:JB  P3.3,LOOP2
+      CLR TR1
+	  MOV A,TL1
+	  MOV P0,A
+HERE:SJMP HERE
+
+     ORG 0200H
+INT_0:SETB TR0
+      	INC R0
+	  CJNE R0,#02H,RETURN
+	  CLR TR0
+	  MOV B,TL0
+	  MOV P1,B
+RETURN:RETI
+
+     END
+
+
+实验六：电子时钟设计
+
+
+	ORG 0000H
+        AJMP MAIN
+        ORG 000BH
+        AJMP TIME
+        ORG 0300H
+        ORG 0080H
+MAIN:
+	mov 20h,#00h
+	MOV 21H,#00H
+	MOV 22H,#00H
+	MOV 23H,#00H
+	MOV IP,#02H		;IP,IE初始化
+	MOV IE,#82H
+	MOV TMOD,#01H		;设定定时器工作方式?
+	MOV TL0,#0B0H
+	MOV TH0,#3CH
+	SETB TR0		;启动定时?
+	MOV SP,#40H		;重设堆栈指针
+NEXT:	LCALL DISP		;调用显示子程序?
+	LCALL KEY		;调用按键检测子程序
+	JZ NEXT			;
+	LCALL ANKEY		;调用按键处理子程序
+	SJMP NEXT		;重新循环
+	NOP
+	NOP
+	NOP	
+;************************************************
+;定时中断处理程序：
+;************************************************
+TIME:	PUSH ACC		;保护现场
+	PUSH PSW
+	MOV TL0,#0B4H		;赋定时初值
+	MOV TH0,#3CH
+	INC 20H			;
+	MOV A,20H
+	CJNE A,#20,RETI1
+	MOV 20H,#00H		;一秒钟时间到
+	MOV A,21H
+	ADD A,#01H
+	DA A
+	MOV 21H,A
+	CJNE A,#60H,RETI1
+	MOV 21H,#00H		;一分钟时间到
+	MOV A,22H
+	ADD A,#01H
+	DA A
+	MOV 22H,A
+	CJNE A,#60H,RETI1
+	MOV 22H,#00H		;一小时时间到
+	MOV A,23H
+	ADD A,#01H
+	DA A
+	MOV 23H,A
+	CJNE A,#24H,RETI1
+	MOV 23H,#00H		;到时间达到24小时,清零.
+RETI1:	POP PSW			;恢复现场
+	POP ACC
+	RETI			;中断返回?
+	NOP
+	NOP
+;****************************************************
+;显示子程序
+;****************************************************
+DISP:	ANL 2FH,#10H		;处理小数点
+	MOV A,21H		;处理秒21H-->2DH,2EH
+	ANL A,#0FH
+	ORL A,2FH
+	MOV 2FH,A
+	MOV A,21H
+	ANL A,#0F0H
+	SWAP A
+	MOV 2EH,A
+	ANL 2DH,#10H
+	MOV A,22H		;处理分钟22H-->2CH,2DH
+	ANL A,#0FH
+	ORL A,2DH
+	MOV 2DH,A
+	MOV A,22H
+	ANL A,#0F0H
+	SWAP A
+	MOV 2CH,A
+	ANL 2BH,#10H
+	MOV A,23H		;处理小时23H-->2AH,2BH
+	ANL A,#0FH
+	ORL A,2BH
+	MOV 2BH,A
+	MOV A,23H
+	ANL A,#0F0H
+	SWAP A
+	MOV 2AH,A
+	MOV R0,#2FH		;显示偏移量
+	MOV R3,#06H
+	MOV DPTR,#TABLE
+	MOV A,#0BFH
+LOOP1:	MOV B,A
+	MOV P2,a
+	MOV A,@R0
+	MOVC A,@A+DPTR
+	MOV P0,a		;送显示
+	MOV R2,#80H		;延时
+	DJNZ R2,$
+	DEC R0
+	MOV A,B
+	RR A
+	DJNZ R3,LOOP1		;循环显示
+	RET
+
+TABLE:	db 28h,7eh,0a2h,62h,74h,61h,21h		;不带小数点
+	DB 7ah,20h,60h,00,00,00,00,00,00
+	DB 8H,5eH,82H,42H,54H,41H,1H,5aH	;带小数点
+	DB 00H,40H,00,00,00,00,00,00
+	NOP
+	NOP
+;*****************************************************
+;按键判断程序
+;*****************************************************
+KEY:	MOV P3,#0FFH
+	MOV A,P3
+	CPL A
+	ANL A,#3CH
+	JZ RETX			;无键按下则返回
+	LCALL DISP
+	LCALL DISP
+	MOV A,P3
+	CPL A
+	ANL A,#3CH
+	JZ RETX			;键盘去抖动。
+	MOV R6,A		;将键值存入R6。
+LOOP2:	LCALL DISP
+	MOV A,P3
+	CPL A
+	ANL A,#3CH
+	JNZ LOOP2		;等待键释放
+	MOV A,R6
+RETX:	RET
+	NOP
+	NOP
+;*****************************************************
+;按键处理子程序
+;*****************************************************
+ANKEY:	CLR EA			;关中断
+LX:	MOV A,R6
+	JB ACC.2,L1		;是功能键转L1
+	JB ACC.3,L2		;是确认键转L2
+	JB ACC.4,L3		;是减1键转L3
+	JNB ACC.5,L12		;不是增1键，转L12
+	JB 2BH.4,L6		;判断使哪一位（时、分、秒）的值加1
+	JB 2DH.4,L8
+	JB 2FH.4,L9
+
+L12:	LCALL DISP
+	LCALL DISP
+	LCALL KEY		;判断有无键按下。
+	JZ L12
+	LJMP LX
+
+L2:	MOV 25H,#00H		;确认键处理程序
+	CLR 2BH.4
+	CLR 2DH.4
+	CLR 2FH.4
+	SETB EA
+	RET
+
+L3:	JB 2BH.4,L61		;增一键处理程序
+	JB 2DH.4,L81
+	JB 2FH.4,L91
+	AJMP L12
+
+L1:	MOV A,25H	    	;功能键处理程序
+	JZ LB1
+	JB ACC.0,LB2
+	JB ACC.1,LB3
+	JNB ACC.2,L12
+LB1:	MOV 25H,#01H		;25H单元是标志位，（25H）=01H调节时单元的值
+	SETB 2BH.4
+	CLR 2DH.4
+	CLR 2FH.4
+	AJMP L12
+
+LB3:	MOV 25H,#04H		;25H单元是标志位，（25H）=01H调节秒单元的值
+	SETB 2FH.4
+	CLR 2DH.4
+	CLR 2BH.4
+	AJMP L12
+
+LB2:	MOV 25H,#02H  		;25H单元是标志位，（25H）=01H调节分单元的值
+	SETB 2DH.4
+	CLR 2BH.4
+	CLR 2FH.4
+	AJMP L12
+
+L61:	AJMP L611
+L81:	AJMP L811
+L91:	AJMP L911
+L6:	MOV A,23H		;时加一
+	ADD A,#01H
+	DA A
+	MOV 23H,A
+	CJNE A,#24H,L15
+L15:	JC L112
+	MOV 23H,#00H
+L112:	AJMP L12
+
+L8:	MOV A,22H		;分加一
+	ADD A,#01H
+	DA A
+	MOV 22H,A
+	CJNE A,#60H,L16
+L16:	JC L112
+	MOV 22H,#00H
+	AJMP L12
+
+L9:	MOV A,21H		;秒加一
+	ADD A,#01H
+	DA A
+	MOV 21H,A
+	CJNE A,#60H,L17
+L17:	JC L112
+	MOV 21H,#00H
+	AJMP L12
+
+L611:	MOV A,23H		;时减一
+	ADD A,#99H
+	DA A
+	MOV 23H,A
+	CJNE A,#99H,L112
+	MOV 23H,#23H
+	AJMP L12
+
+L811:	MOV A,22H		;分减一
+	ADD A,#99H
+	DA A
+	MOV 22H,A
+	CJNE A,#99H,L112
+	MOV 22H,#59H
+	AJMP L12
+
+L911:	MOV A,21H		;秒减一
+	ADD A,#99H
+	DA A
+	MOV 21H,A
+	CJNE A,#99H,L112
+	MOV 21H,#59H
+	AJMP L12
+	NOP
+	NOP
+	END
+
+

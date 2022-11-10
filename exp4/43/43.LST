@@ -1,0 +1,90 @@
+A51 MACRO ASSEMBLER  43                                                                   11/11/2021 10:48:44 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN 43.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE 43.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+0000 020080            2     LJMP MAIN
+0003                   3     ORG 0003H  ;Íâ²¿ÖÐ¶Ï¿Ú0µÄµØÖ·Èë¿Ú
+0003 02008F            4     LJMP INT_0
+0013                   5     ORG 0013H  ;Íâ²¿ÖÐ¶Ï¿Ú1µÄµØÖ·Èë¿Ú
+0013 0200A9            6     LJMP INT_1
+0080                   7     ORG 0080H
+0080                   8     MAIN: 
+0080 758130            9             MOV SP,#30H
+0083 D2AF             10         SETB EA  ;´ò¿ªÖÐ¶Ï×Ü¿ª¹Ø
+0085 D2A8             11             SETB EX0  ;´ò¿ªÍâ²¿ÖÐ¶Ï0
+0087 D2AA             12             SETB EX1  ;´ò¿ªÍâ²¿ÖÐ¶Ï1
+0089 D288             13             SETB IT0
+008B D28A             14             SETB IT1
+008D 80FE             15             SJMP $
+008F                  16     INT_0:
+008F C2A8             17             CLR EX0  ;¹ØÍâ²¿ÖÐ¶Ï0
+0091 C0D0             18         PUSH PSW  ;ÏÖ³¡±£»¤
+0093 C0E0             19         PUSH ACC
+0095 D2A8             20             SETB EX0  ;´ò¿ªÍâ²¿ÖÐ¶Ï0
+0097 1200C3           21             LCALL DELAY  ;µ÷ÓÃÑÓÊ±10ms£¬È¥¶¶¶¯  
+009A 20B203           22             JB P3.2,RETURN1 ;ÈôK0Îª¸ßµçÆ½ÔòÌø³ö
+009D 7580C0           23         MOV P0,#0C0H  ;·ñÔòÊÂë¹ÜÏÔÊ¾0
+00A0                  24     RETURN1:
+00A0 C2A8             25             CLR EX0
+00A2 D0E0             26         POP ACC  ;ÏÖ³¡»Ö¸´
+00A4 D0D0             27             POP PSW
+00A6 D2A8             28             SETB EX0
+00A8 32               29         RETI
+00A9                  30     INT_1:
+00A9 C2AA             31             CLR EX1  ;¹ØÍâ²¿ÖÐ¶Ï1
+00AB C0D0             32         PUSH PSW  ;ÏÖ³¡±£»¤
+00AD C0E0             33         PUSH ACC
+00AF D2AA             34             SETB EX1  ;´ò¿ªÍâ²¿ÖÐ¶Ï1
+00B1 1200C3           35             LCALL DELAY  ;µ÷ÓÃÑÓÊ±10ms£¬È¥¶¶¶¯
+00B4 20B303           36             JB P3.3,RETURN2  ;ÈôK1Îª¸ßµçÆ½ÔòÌø³ö
+00B7 7580F9           37         MOV P0,#0F9H  ;·ñÔò»áÊÂë¹ÜÏÔÊ¾1
+00BA                  38     RETURN2:
+00BA C2AA             39             CLR EX1
+00BC D0E0             40         POP ACC  ;ÏÖ³¡»Ö¸´
+00BE D0D0             41             POP PSW
+00C0 D2AA             42             SETB EX1
+00C2 32               43             RETI  
+00C3 7F64             44     DELAY:  MOV R7,#100
+00C5 7E64             45     D1:     MOV R6,#100
+00C7 DEFE             46     D2:     DJNZ R6,D2
+00C9 DFFA             47                     DJNZ R7,D1
+00CB 22               48                     RET      
+                      49                     END
+A51 MACRO ASSEMBLER  43                                                                   11/11/2021 10:48:44 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+D1 . . . . . . . .  C ADDR   00C5H   A   
+D2 . . . . . . . .  C ADDR   00C7H   A   
+DELAY. . . . . . .  C ADDR   00C3H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+EX0. . . . . . . .  B ADDR   00A8H.0 A   
+EX1. . . . . . . .  B ADDR   00A8H.2 A   
+INT_0. . . . . . .  C ADDR   008FH   A   
+INT_1. . . . . . .  C ADDR   00A9H   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . .  B ADDR   0088H.2 A   
+MAIN . . . . . . .  C ADDR   0080H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+RETURN1. . . . . .  C ADDR   00A0H   A   
+RETURN2. . . . . .  C ADDR   00BAH   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

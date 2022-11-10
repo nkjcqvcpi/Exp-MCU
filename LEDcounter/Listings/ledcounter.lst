@@ -1,0 +1,65 @@
+A51 MACRO ASSEMBLER  LEDCOUNTER                                                           10/31/2019 22:50:17 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\ledcounter.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE ledcounter.asm SET(SMALL) DEBUG PRINT(.\Listings\ledcounter.lst) OBJECT
+                      (.\Objects\ledcounter.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                     ORG 0000H;       
+0000 020003            2                     LJMP MAIN;
+0003                   3     MAIN:   
+0003 75A0FE            4                     MOV  P2,#0FEH;
+0006 7900              5             MOV R1,#00;
+0008 900080            6             MOV  DPTR,#0080H;
+000B E9                7             MOV   A,R1;
+000C                   8     LOOP1:  
+000C B40A03            9                     CJNE   A,#0AH,LOOP;
+000F 7900             10             MOV R1,#00;
+0011 E9               11             MOV   A,R1;
+0012                  12      LOOP:          
+0012 93               13                     MOVC  A,@A+DPTR;
+0013 F580             14                     MOV   P0,A;
+0015 111B             15                     ACALL DELay;
+0017 09               16                     INC R1;
+0018 E9               17                     MOV   A,R1;
+0019 110C             18                     ACALL   LOOP1;
+001B                  19     DElay:          
+001B 7F0A             20                     MOV R7,#10;
+001D                  21     DEL1:           
+001D 7EC8             22                     MOV R6,#200;
+001F                  23     DEL2:           
+001F 7DF8             24                     MOV R5,#248;
+0021 DDFE             25                     DJNZ R5,$;
+0023 DEFA             26                     DJNZ R6,DEL2;
+0025 DFF6             27                     DJNZ R7,DEL1;
+0027 22               28                     RET     
+0080                  29                     ORG 0080H;
+0080 3F065B4F         30                     DB  3FH,06H,5BH,4FH,66H,6DH,7DH,07H,7FH,6FH;
+0084 666D7D07                
+0088 7F6F                    
+                      31                     END;
+A51 MACRO ASSEMBLER  LEDCOUNTER                                                           10/31/2019 22:50:17 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DEL1 . . . . . . .  C ADDR   001DH   A   
+DEL2 . . . . . . .  C ADDR   001FH   A   
+DELAY. . . . . . .  C ADDR   001BH   A   
+LOOP . . . . . . .  C ADDR   0012H   A   
+LOOP1. . . . . . .  C ADDR   000CH   A   
+MAIN . . . . . . .  C ADDR   0003H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

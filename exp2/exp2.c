@@ -1,0 +1,16 @@
+#include <reg51.h>
+
+void main(){
+	while(1)
+	switch(P3){
+		case ~0x01: P1 = 0xef;break;
+		case ~0x02: P1 = 0xf7;break;
+		case ~0x04: P1 = 0xe7;break;
+		case ~0x08: P1 = 0xfb;break;
+		case ~0x10: P1 = 0xeb;break;
+		case ~0x20: P1 = 0xf3;break;
+		case ~0x40: P1 = 0xe3;break;
+		case ~0x80: P1 = 0xfd;break;
+		default: P1 = 0xff;break;
+	}
+}

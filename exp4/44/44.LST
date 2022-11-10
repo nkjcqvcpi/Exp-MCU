@@ -1,0 +1,74 @@
+A51 MACRO ASSEMBLER  44                                                                   11/11/2021 10:47:29 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN 44.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE 44.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG             0000H;程序的初始位置
+0000 020100            2     LJMP    MAIN  ;跳到程序的起始位置
+0003                   3     ORG             0003H ;外部中断程序0入口
+0003 02011E            4     LJMP    INT       ;跳到中断程序的起始位置               
+0100                   5     ORG             0100H
+0100                   6     MAIN:
+0100 C288              7             CLR     IT0         ;采用低电平触发
+0102 D2A8              8         SETB EX0         ;允许外部中断0中断
+0104 D2AF              9             SETB   EA          ;开启总中断
+0106 7B00             10             MOV    R3,#00H     ;将R3置0
+0108 90012F           11             MOV    DPTR,#TABLE ;将表文件头的地址赋给基址            
+010B                  12     LOOP:
+010B EB               13             MOV    A,R3        ;将R3置给A
+010C 93               14             MOVC   A,@A+DPTR          ;基址加变址查表内容赋给A      
+010D F580             15             MOV    P0,A        ;将A给P0口
+010F 210B             16             AJMP   LOOP
+0111 7F19             17     DELAY:  MOV R7,#25       ;延时程序
+0113 7E32             18     LOOP3:  MOV R6,#50
+0115 7D32             19     LOOP2:  MOV R5,#50
+0117 DDFE             20     LOOP1:  DJNZ R5,LOOP1
+0119 DEFA             21             DJNZ R6,LOOP2
+011B DFF6             22             DJNZ R7,LOOP3
+011D 22               23             RET 
+011E 3111             24     INT:   ACALL  DELAY          ;中断程序  
+0120 30B2FD           25     LOOP4: JNB    P3.2,LOOP4
+0123 3111             26            ACALL  DELAY
+0125 30B2FD           27     LOOP5: JNB    P3.2,LOOP5     ;去抖动
+0128 0B               28            INC    R3             ;R3加一 
+0129 BB0A02           29            CJNE   R3,#10,RETURN  ;若R3不为10则转移  
+012C 7B00             30            MOV    R3,#0          ;将R3置0 
+012E 32               31     RETURN: RETI
+012F C0F9A4B0         32     TABLE:  DB   0C0H, 0F9H, 0A4H, 0B0H, 99H, 92H, 82H, 0F8H, 80H, 90H
+0133 999282F8                
+0137 8090                    
+                      33             END                  ;程序结束
+A51 MACRO ASSEMBLER  44                                                                   11/11/2021 10:47:29 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   0111H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+EX0. . . . . . . .  B ADDR   00A8H.0 A   
+INT. . . . . . . .  C ADDR   011EH   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+LOOP . . . . . . .  C ADDR   010BH   A   
+LOOP1. . . . . . .  C ADDR   0117H   A   
+LOOP2. . . . . . .  C ADDR   0115H   A   
+LOOP3. . . . . . .  C ADDR   0113H   A   
+LOOP4. . . . . . .  C ADDR   0120H   A   
+LOOP5. . . . . . .  C ADDR   0125H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+RETURN . . . . . .  C ADDR   012EH   A   
+TABLE. . . . . . .  C ADDR   012FH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
